@@ -1,0 +1,40 @@
+<!-- views/realTimeProducts.handlebars -->
+<html>
+  <head>
+    <title>Productos en Tiempo Real</title>
+  </head>
+  <body>
+    <h1>Productos en Tiempo Real</h1>
+    <ul>
+      {{#each productos}}
+        <li>{{this.nombre}} - {{this.precio}}</li>
+      {{/each}}
+    </ul>
+
+  
+    <form id="nuevoProductoForm">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" required>
+      <label for="precio">Precio:</label>
+      <input type="number" id="precio" name="precio" required>
+      <button type="submit">Agregar Producto</button>
+    </form>
+
+   
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      
+      const nuevoProductoForm = document.getElementById('nuevoProductoForm');
+      nuevoProductoForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const nombre = document.getElementById('nombre').value;
+        const precio = document.getElementById('precio').value;
+
+       
+        socket.emit('nuevoProducto', { nombre, precio });
+      });
+    </script>
+  </body>
+</html>
